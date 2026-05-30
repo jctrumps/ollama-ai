@@ -1,0 +1,49 @@
+---
+- name: Create application directory
+  ansible.builtin.file:
+    path: "{{ ollama_app_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Create AI data directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  loop:
+    - "{{ ollama_data_dir }}"
+    - "{{ ollama_data_dir }}/ollama"
+    - "{{ ollama_data_dir }}/open-webui"
+
+- name: Copy compose file
+  ansible.builtin.copy:
+    src: "{{ ollama_compose_src }}"
+    dest: "{{ ollama_app_dir }}/compose.yml"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Copy environment file
+  ansible.builtin.copy:
+    src: "{{ ollama_env_src }}"
+    dest: "{{ ollama_app_dir }}/.env"
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: Pull and start Ollama AI stack
+  community.docker.docker_compose_v2:
+    project_src: "{{ ollama_app_dir }}"
+    files:
+      - compose.yml
+    pull: always
+    state: present
+
+- name: Pull initial Ollama models
+  ansible.builtin.command: "docker exec ollama ollama pull {{ item }}"
+  loop: "{{ ollama_initial_models }}"
+  changed_when: true

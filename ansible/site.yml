@@ -1,0 +1,9 @@
+---
+- name: Configure Ollama AI VM
+  hosts: ollama
+  become: true
+  roles:
+    - base
+    - docker
+    - ai_stack
+    - firewall

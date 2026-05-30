@@ -1,0 +1,21 @@
+proxmox_endpoint  = "https://pve.example.local:8006/"
+proxmox_api_token = "root@pam!ollama-ai=REPLACE_ME"
+proxmox_insecure  = true
+
+node_name      = "pve"
+vm_id          = 9101
+vm_name        = "ollama-01"
+template_vm_id = 9024
+
+cpu_cores    = 8
+memory_mb    = 32768
+disk_size_gb = 250
+
+datastore_id = "local-lvm"
+bridge       = "vmbr0"
+
+# Static example. Use null values for DHCP.
+ipv4_address = "192.168.1.51/24"
+ipv4_gateway = "192.168.1.1"
+
+ssh_public_key = "ssh-ed25519 REPLACE_ME jctrumps"

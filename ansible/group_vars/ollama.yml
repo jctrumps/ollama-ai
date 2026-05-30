@@ -1,0 +1,8 @@
+---
+ollama_project_name: ollama-ai
+ollama_app_dir: /opt/ollama-ai
+ollama_data_dir: /srv/ai
+ollama_compose_src: "{{ playbook_dir }}/../compose/compose.yml"
+ollama_env_src: "{{ playbook_dir }}/../.env.example"
+ollama_initial_models:
+  - qwen3:0.6b

@@ -1,0 +1,22 @@
+proxmox_endpoint  = "https://192.168.86.16:8006/api2/json"
+proxmox_api_token = "root@pam!ollama-ai=REPLACE_ME"
+proxmox_insecure  = true
+
+node_name      = "proxmox-hx5-02.local"
+vm_id          = 2254
+vm_name        = "ollama-01"
+template_vm_id = 9024
+
+cpu_cores    = 32
+memory_mb    = 98304
+disk_size_gb = 20
+cpu_type     = "host"
+
+datastore_id = "local-lvm"
+bridge       = "vmbr0"
+
+# Static example. Use null values for DHCP.
+ipv4_address = "192.168.86.254/24"
+ipv4_gateway = "192.168.86.1"
+
+ssh_public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKwxa91F2n9lJ2/EveGBxAR9gIMyCMHt/M2vFK7u3sMp ollama-01"
