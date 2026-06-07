@@ -22,6 +22,8 @@ Current project state:
 
 - Open WebUI and Ollama are deployed and reachable by IP.
 - The project intentionally uses direct HTTP by IP for now.
+- Open WebUI defaults to `tinyllama:latest`; `qwen3:30b-a3b` remains installed for higher-quality testing.
+- TinyLlama is warmed at stack startup, and Open WebUI background task work is routed to TinyLlama to reduce CPU load.
 - HTTPS, Caddy, Avahi/mDNS, LLMNR, explicit IPv4 mDNS publishing, VM-hosted DNS, router DNS changes, and per-client hosts-file edits are not part of the current configuration.
 - Do not reintroduce HTTPS or hostname discovery without an explicit new planning decision.
 
@@ -50,7 +52,10 @@ Current project state:
 - Open WebUI is exposed directly on host port `3000`; Caddy is not used.
 - `ansible/roles/base/tasks/main.yml` installs base packages and enables the qemu guest agent.
 - The VM disk is intended to live on Proxmox storage `mycloudpr2100`; the guest does not mount the NAS directly.
-- The initial model list pulls a mixed CPU-oriented starter bundle, and current testing prefers `qwen3:30b-a3b` as the default model.
+- The initial model list pulls a mixed CPU-oriented starter bundle. Open WebUI defaults to `tinyllama:latest`, which is also warmed by a one-shot Compose service at stack startup.
+- `qwen3:30b-a3b` remains installed for higher-quality testing.
+- CPU defaults use bounded context, one loaded model, one active generation, and a small request queue.
+- Open WebUI task work is routed to TinyLlama, with follow-up, tag, and autocomplete generation disabled by default to reduce background CPU work.
 - App deploy pulls the current Open WebUI image so it updates when the upstream `main` image changes.
 
 ## Safe Validation

@@ -13,6 +13,14 @@ Use this directory as the operator-facing reference for the `ollama-ai` stack.
 
 The VM, Docker stack, Open WebUI, and Ollama API are working by direct IP. The project currently uses plain HTTP by IP and does not use HTTPS, Caddy, mDNS, LLMNR, VM-hosted DNS, router DNS changes, or hosts-file edits.
 
+Current model/runtime defaults:
+
+- Open WebUI default model: `tinyllama:latest`.
+- Higher-quality test model retained: `qwen3:30b-a3b`.
+- TinyLlama is pulled and warmed by the one-shot `ollama-warmup` Compose service at stack startup.
+- Ollama is configured for CPU-oriented use: context length `2048`, one loaded model, one active generation, and queue size `4`.
+- Open WebUI task work uses TinyLlama; follow-up, tag, and autocomplete generation are disabled by default.
+
 Current access URLs:
 
 - Open WebUI: `http://192.168.86.254:3000`

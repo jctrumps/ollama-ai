@@ -6,9 +6,11 @@ services:
     ports:
       - "${OLLAMA_PORT}:11434"
     environment:
+      - OLLAMA_CONTEXT_LENGTH=${OLLAMA_CONTEXT_LENGTH}
       - OLLAMA_KEEP_ALIVE=${OLLAMA_KEEP_ALIVE}
       - OLLAMA_MAX_LOADED_MODELS=${OLLAMA_MAX_LOADED_MODELS}
       - OLLAMA_NUM_PARALLEL=${OLLAMA_NUM_PARALLEL}
+      - OLLAMA_MAX_QUEUE=${OLLAMA_MAX_QUEUE}
       - OLLAMA_LOAD_TIMEOUT=${OLLAMA_LOAD_TIMEOUT}
     volumes:
       - /srv/ai/ollama:/root/.ollama
@@ -25,9 +27,38 @@ services:
       - "${OPEN_WEBUI_PORT}:8080"
     environment:
       - OLLAMA_BASE_URL=http://ollama:11434
+      - DEFAULT_MODELS=${OLLAMA_DEFAULT_MODEL}
+      - TASK_MODEL=${OPEN_WEBUI_TASK_MODEL}
+      - ENABLE_TITLE_GENERATION=${OPEN_WEBUI_ENABLE_TITLE_GENERATION}
+      - ENABLE_FOLLOW_UP_GENERATION=${OPEN_WEBUI_ENABLE_FOLLOW_UP_GENERATION}
+      - ENABLE_TAGS_GENERATION=${OPEN_WEBUI_ENABLE_TAGS_GENERATION}
+      - ENABLE_AUTOCOMPLETE_GENERATION=${OPEN_WEBUI_ENABLE_AUTOCOMPLETE_GENERATION}
       - TZ=${TZ}
     volumes:
       - /srv/ai/open-webui:/app/backend/data
+    networks:
+      - ollama-ai
+
+  ollama-warmup:
+    image: curlimages/curl:latest
+    container_name: ollama-warmup
+    depends_on:
+      - ollama
+    restart: "no"
+    command:
+      - sh
+      - -c
+      - >-
+        until curl -fsS http://ollama:11434/api/version >/dev/null; do sleep 2; done;
+        if ! curl -fsS http://ollama:11434/api/show
+        -H 'Content-Type: application/json'
+        -d '{"name":"${OLLAMA_DEFAULT_MODEL}"}' >/dev/null; then
+        curl -fsS http://ollama:11434/api/pull
+        -H 'Content-Type: application/json'
+        -d '{"name":"${OLLAMA_DEFAULT_MODEL}"}'; fi;
+        curl -fsS http://ollama:11434/api/generate
+        -H 'Content-Type: application/json'
+        -d '{"model":"${OLLAMA_DEFAULT_MODEL}","prompt":"warm up","stream":false,"keep_alive":"${OLLAMA_KEEP_ALIVE}","options":{"num_predict":1,"num_ctx":${OLLAMA_CONTEXT_LENGTH}}}'
     networks:
       - ollama-ai
 

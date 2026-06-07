@@ -50,3 +50,9 @@ http://192.168.86.254:11434
 Docker image and layer storage stays at `/var/lib/docker`, and the application stores persistent data under `/srv/ai`.
 
 The app deployment pulls the current Open WebUI image each run, so rerunning Ansible updates Open WebUI when a newer `main` image is available without intentionally updating Ollama at the same time.
+
+Open WebUI is configured to default to `tinyllama:latest`. The Compose stack includes a one-shot warmup container that pulls and warms that model when the stack starts.
+
+CPU defaults are set in `.env.example`: context length `2048`, one loaded model, one active generation, and a small request queue.
+
+Open WebUI task defaults are also CPU-oriented: title generation uses `tinyllama:latest`, while follow-up, tag, and autocomplete generation are disabled by default. Existing Open WebUI instances may persist older settings in the database, so verify these in the Admin Settings if background CPU use continues after answers finish.

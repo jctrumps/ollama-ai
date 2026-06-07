@@ -7,6 +7,7 @@ ollama_env_src: "{{ playbook_dir }}/../.env.example"
 
 # Start small until storage/deployment is confirmed.
 ollama_initial_models:
+  - tinyllama:latest
   - qwen3:4b
   - llama3.2:3b
   - gemma3:4b

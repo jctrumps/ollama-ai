@@ -18,6 +18,7 @@ Docker runs inside the VM, not directly on the Proxmox host. The VM disk lives o
 
 - Ollama listens on LAN port `11434`.
 - Open WebUI listens on LAN port `3000` over HTTP.
+- `ollama-warmup` is a one-shot Compose service that pulls and warms `tinyllama:latest` at stack startup.
 - Caddy, HTTPS, mDNS, LLMNR, VM-hosted DNS, and hosts-file workarounds are not part of the current design.
 
 Current URLs:

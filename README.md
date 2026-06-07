@@ -46,8 +46,10 @@ The infrastructure and application stack are in a working baseline state:
 - Docker data stays at `/var/lib/docker`; application data stays under `/srv/ai`.
 - Open WebUI is exposed directly over HTTP on `http://192.168.86.254:3000`.
 - Ollama responds on `http://192.168.86.254:11434`.
-- `qwen3:30b-a3b` is the preferred default model for current testing.
-- Ollama is tuned for one loaded model and one request at a time to favor the default model on CPU.
+- `tinyllama:latest` is the Open WebUI default for fast CPU responses.
+- `qwen3:30b-a3b` remains installed for higher-quality testing.
+- Ollama is tuned for CPU-oriented use with bounded context, one loaded model, one active generation, and a small request queue.
+- Open WebUI background task work is routed to TinyLlama, and follow-up/tag/autocomplete generation are disabled by default to reduce CPU use after answers.
 
 Current decision:
 
@@ -99,11 +101,13 @@ ansible-playbook site.yml
 ```bash
 ssh ubuntu@ollama-01
 cd /opt/ollama-ai
-docker exec -it ollama ollama pull qwen3:30b-a3b
-docker exec -it ollama ollama run qwen3:30b-a3b
+docker exec -it ollama ollama pull tinyllama:latest
+docker exec -it ollama ollama run tinyllama:latest
 ```
 
 The Ansible deployment also pulls the configured starter model bundle and refreshes container images on each app deploy.
+
+TinyLlama is pulled and warmed automatically when the Compose stack starts.
 
 ## Makefile helpers
 
