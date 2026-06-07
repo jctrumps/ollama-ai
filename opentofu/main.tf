@@ -17,7 +17,7 @@ resource "proxmox_virtual_environment_vm" "ollama" {
 
   cpu {
     cores = var.cpu_cores
-    type  = "host"
+    type  = var.cpu_type
   }
 
   memory {
@@ -54,6 +54,6 @@ resource "local_file" "ansible_inventory" {
   filename = "${path.module}/../ansible/inventory/hosts.ini"
   content  = <<-EOT
   [ollama]
-  ${var.vm_name} ansible_host=${var.ipv4_address == null ? var.vm_name : split("/", var.ipv4_address)[0]} ansible_user=ubuntu
+  ${var.vm_name} ansible_host=${var.ipv4_address == null ? var.vm_name : split("/", var.ipv4_address)[0]} ansible_user=ubuntu ansible_python_interpreter=/usr/bin/python3.12 ansible_ssh_private_key_file=~/.ssh/ollama_01_ed25519 ansible_ssh_common_args='-o IdentitiesOnly=yes'
   EOT
 }

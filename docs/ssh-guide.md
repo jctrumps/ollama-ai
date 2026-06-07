@@ -11,13 +11,13 @@ This project uses SSH in three places:
 From Windows PowerShell:
 
 ```powershell
-ssh-keygen -t ed25519 -f "$HOME\.ssh\proxmox_templates_ed25519" -C "proxmox-templates"
+ssh-keygen -t ed25519 -f "$HOME\.ssh\ollama_01_ed25519" -C "ollama-01"
 ```
 
 Files created:
 
-- `C:\Users\<YOUR_NAME>\.ssh\proxmox_templates_ed25519`
-- `C:\Users\<YOUR_NAME>\.ssh\proxmox_templates_ed25519.pub`
+- `C:\Users\<YOUR_NAME>\.ssh\ollama_01_ed25519`
+- `C:\Users\<YOUR_NAME>\.ssh\ollama_01_ed25519.pub`
 
 ## Remove An Old Host Key
 
@@ -32,7 +32,7 @@ ssh-keygen -R <IP_ADDRESS>
 From Windows PowerShell:
 
 ```powershell
-scp "$HOME\.ssh\proxmox_templates_ed25519.pub" root@<PROXMOX_IP>:/root/
+scp "$HOME\.ssh\ollama_01_ed25519.pub" root@<PROXMOX_IP>:/root/
 ```
 
 ## SSH To The Proxmox Host
@@ -40,7 +40,7 @@ scp "$HOME\.ssh\proxmox_templates_ed25519.pub" root@<PROXMOX_IP>:/root/
 If the dedicated key is already trusted on the Proxmox host:
 
 ```powershell
-ssh -i "$HOME\.ssh\proxmox_templates_ed25519" root@<PROXMOX_IP>
+ssh -i "$HOME\.ssh\ollama_01_ed25519" root@<PROXMOX_IP>
 ```
 
 If not, use your current working login method once, then install the public key into `/root/.ssh/authorized_keys`.
@@ -52,7 +52,7 @@ For VM `9013`:
 1. Open the VM.
 2. Go to `Cloud-Init`.
 3. Edit `SSH public keys`.
-4. Paste the contents of `C:\Users\<YOUR_NAME>\.ssh\proxmox_templates_ed25519.pub`.
+4. Paste the contents of `C:\Users\<YOUR_NAME>\.ssh\ollama_01_ed25519.pub`.
 5. Apply the change.
 6. Reboot the VM.
 
@@ -63,7 +63,7 @@ Paste the `.pub` file content only. Do not paste the private key.
 If you prefer the shell:
 
 ```bash
-qm set 9013 --sshkey /root/proxmox_templates_ed25519.pub
+qm set 9013 --sshkey /root/ollama_01_ed25519.pub
 qm reboot 9013
 ```
 
@@ -72,12 +72,35 @@ qm reboot 9013
 Once the VM has an IP address:
 
 ```powershell
-ssh -i "$HOME\.ssh\proxmox_templates_ed25519" debian@<VM_IP>
+ssh -i "$HOME\.ssh\ollama_01_ed25519" debian@<VM_IP>
 ```
 
 Default cloud-init user for this template:
 
 - `debian`
+
+## WSL Ansible Key Path
+
+For this repo, WSL-based Ansible expects the private key at:
+
+- `~/.ssh/ollama_01_ed25519`
+
+Example from WSL:
+
+```bash
+mkdir -p ~/.ssh
+cp /mnt/c/Users/<YOUR_NAME>/.ssh/ollama_01_ed25519 ~/.ssh/ollama_01_ed25519
+chmod 600 ~/.ssh/ollama_01_ed25519
+ssh-add ~/.ssh/ollama_01_ed25519
+```
+
+The repo `ansible.cfg` uses that path as `private_key_file`.
+
+Current deployed inventory also expects:
+
+- Ansible user: `ubuntu`
+- VM IP: `192.168.86.254`
+- Private key: `~/.ssh/ollama_01_ed25519`
 
 ## Find The VM IP
 
@@ -101,13 +124,13 @@ Create `C:\Users\<YOUR_NAME>\.ssh\config`:
 Host proxmox
     HostName <PROXMOX_IP>
     User root
-    IdentityFile C:/Users/<YOUR_NAME>/.ssh/proxmox_templates_ed25519
+    IdentityFile C:/Users/<YOUR_NAME>/.ssh/ollama_01_ed25519
     IdentitiesOnly yes
 
 Host debian-template
     HostName <VM_IP>
     User debian
-    IdentityFile C:/Users/<YOUR_NAME>/.ssh/proxmox_templates_ed25519
+    IdentityFile C:/Users/<YOUR_NAME>/.ssh/ollama_01_ed25519
     IdentitiesOnly yes
 ```
 

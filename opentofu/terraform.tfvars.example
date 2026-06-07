@@ -9,9 +9,9 @@ template_vm_id = 9024
 
 cpu_cores    = 8
 memory_mb    = 32768
-disk_size_gb = 250
+disk_size_gb = 500
 
-datastore_id = "local-lvm"
+datastore_id = "mycloudpr2100"
 bridge       = "vmbr0"
 
 # Static example. Use null values for DHCP.

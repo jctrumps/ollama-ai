@@ -1,7 +1,11 @@
 ---
-- name: Configure Ollama AI VM
+- name: Deploy Ollama AI stack
   hosts: ollama
   become: true
+
+  vars_files:
+    - group_vars/ollama.yml
+
   roles:
     - base
     - docker

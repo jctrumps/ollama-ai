@@ -11,10 +11,19 @@
 Default target values used across the repo:
 
 - VM name: `ollama-01`
+- Proxmox datastore: `mycloudpr2100`
+- VM disk size: `500 GB`
 - App path: `/opt/ollama-ai`
 - Data path: `/srv/ai`
 - Ollama port: `11434`
-- Open WebUI port: `3000`
+- Open WebUI URL: `http://192.168.86.254:3000`
+
+Current project state:
+
+- Open WebUI and Ollama are deployed and reachable by IP.
+- The project intentionally uses direct HTTP by IP for now.
+- HTTPS, Caddy, Avahi/mDNS, LLMNR, explicit IPv4 mDNS publishing, VM-hosted DNS, router DNS changes, and per-client hosts-file edits are not part of the current configuration.
+- Do not reintroduce HTTPS or hostname discovery without an explicit new planning decision.
 
 ## Repository Map
 
@@ -37,9 +46,12 @@ Default target values used across the repo:
 
 - `opentofu/main.tf` writes `ansible/inventory/hosts.ini` via `local_file`.
 - `ansible/group_vars/ollama.yml` is the main source for deployment paths and starter models.
-- `ansible/group_vars/ollama_vault.yml.example` is a template only; real secrets should stay outside Git.
 - `ansible/roles/ai_stack/tasks/main.yml` copies `compose/compose.yml` and `.env.example` to `/opt/ollama-ai` on the VM.
-- The initial model list currently defaults to `qwen3:0.6b`.
+- Open WebUI is exposed directly on host port `3000`; Caddy is not used.
+- `ansible/roles/base/tasks/main.yml` installs base packages and enables the qemu guest agent.
+- The VM disk is intended to live on Proxmox storage `mycloudpr2100`; the guest does not mount the NAS directly.
+- The initial model list pulls a mixed CPU-oriented starter bundle, and current testing prefers `qwen3:30b-a3b` as the default model.
+- App deploy pulls the current Open WebUI image so it updates when the upstream `main` image changes.
 
 ## Safe Validation
 

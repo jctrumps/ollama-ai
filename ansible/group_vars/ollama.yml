@@ -4,5 +4,19 @@ ollama_app_dir: /opt/ollama-ai
 ollama_data_dir: /srv/ai
 ollama_compose_src: "{{ playbook_dir }}/../compose/compose.yml"
 ollama_env_src: "{{ playbook_dir }}/../.env.example"
+
+# Start small until storage/deployment is confirmed.
 ollama_initial_models:
-  - qwen3:0.6b
+  - qwen3:4b
+  - llama3.2:3b
+  - gemma3:4b
+  - qwen3:8b
+  - qwen2.5-coder:7b
+  - gemma3:12b
+  - phi4:14b
+  - qwen3:14b
+  - qwen3:30b-a3b
+  - mistral
+
+# Docker image and layer storage stays local on the VM.
+docker_data_root: "/var/lib/docker"

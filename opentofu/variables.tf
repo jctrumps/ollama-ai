@@ -50,12 +50,12 @@ variable "memory_mb" {
 
 variable "disk_size_gb" {
   type    = number
-  default = 250
+  default = 500
 }
 
 variable "datastore_id" {
   type    = string
-  default = "local-lvm"
+  default = "mycloudpr2100"
 }
 
 variable "bridge" {
@@ -78,4 +78,10 @@ variable "ipv4_gateway" {
 variable "ssh_public_key" {
   description = "Public SSH key for cloud-init user."
   type        = string
+}
+
+variable "cpu_type" {
+  description = "Proxmox CPU type/model. Use 'host' to expose host CPU features to the VM."
+  type        = string
+  default     = "host"
 }

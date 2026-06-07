@@ -5,6 +5,11 @@ services:
     restart: unless-stopped
     ports:
       - "${OLLAMA_PORT}:11434"
+    environment:
+      - OLLAMA_KEEP_ALIVE=${OLLAMA_KEEP_ALIVE}
+      - OLLAMA_MAX_LOADED_MODELS=${OLLAMA_MAX_LOADED_MODELS}
+      - OLLAMA_NUM_PARALLEL=${OLLAMA_NUM_PARALLEL}
+      - OLLAMA_LOAD_TIMEOUT=${OLLAMA_LOAD_TIMEOUT}
     volumes:
       - /srv/ai/ollama:/root/.ollama
     networks:

@@ -18,6 +18,9 @@ nano terraform.tfvars
 tofu init
 tofu apply
 
+cd ../ansible
+WSL
+
 eval "$(ssh-agent -s)"
 mkdir -p ~/.ssh
 
@@ -26,9 +29,24 @@ chmod 600 ~/.ssh/<matching-private-key>
 
 ssh-add ~/.ssh/<matching-private-key>
 
-cd ../ansible
 export ANSIBLE_CONFIG="$PWD/ansible.cfg"
 ansible-galaxy collection install -r requirements.yml
 ansible all -m ping
 ansible-playbook site.yml
 ```
+
+The deployed stack exposes Open WebUI directly over HTTP:
+
+```text
+http://192.168.86.254:3000
+```
+
+Ollama is available at:
+
+```text
+http://192.168.86.254:11434
+```
+
+Docker image and layer storage stays at `/var/lib/docker`, and the application stores persistent data under `/srv/ai`.
+
+The app deployment pulls the current Open WebUI image each run, so rerunning Ansible updates Open WebUI when a newer `main` image is available without intentionally updating Ollama at the same time.

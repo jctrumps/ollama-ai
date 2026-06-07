@@ -20,7 +20,7 @@
 
 - name: Add Docker apt repository
   ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_facts['distribution_release'] }} stable"
     state: present
     filename: docker
 
@@ -35,11 +35,38 @@
     state: present
     update_cache: true
 
+- name: Ensure Docker config directory exists
+  ansible.builtin.file:
+    path: /etc/docker
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Remove custom Docker daemon config
+  ansible.builtin.file:
+    path: /etc/docker/daemon.json
+    state: absent
+  notify: Restart docker
+
 - name: Enable Docker
   ansible.builtin.systemd:
     name: docker
     enabled: true
     state: started
+
+- name: Flush handlers so Docker restarts before app deploy
+  ansible.builtin.meta: flush_handlers
+
+- name: Verify Docker root directory
+  ansible.builtin.command: docker info --format '{{ "{{" }} .DockerRootDir {{ "}}" }}'
+  changed_when: false
+  register: docker_root_dir
+
+- name: Fail if Docker root directory is not local
+  ansible.builtin.fail:
+    msg: "Docker Root Dir is {{ docker_root_dir.stdout }}, expected {{ docker_data_root }}. Docker image and layer storage must stay on the VM local disk."
+  when: docker_root_dir.stdout != docker_data_root
 
 - name: Add Ansible user to docker group
   ansible.builtin.user:

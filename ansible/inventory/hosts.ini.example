@@ -1,2 +1,2 @@
 [ollama]
-ollama-01 ansible_host=192.168.1.51 ansible_user=ubuntu
+ollama-01 ansible_host=192.168.1.51 ansible_user=ubuntu ansible_python_interpreter=/usr/bin/python3.12 ansible_ssh_private_key_file=~/.ssh/ollama_01_ed25519 ansible_ssh_common_args='-o IdentitiesOnly=yes'

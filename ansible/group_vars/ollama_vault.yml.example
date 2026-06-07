@@ -1,4 +1,0 @@
----
-# Copy to ollama_vault.yml and encrypt later with Ansible Vault when secrets are added.
-# ansible-vault encrypt group_vars/ollama_vault.yml
-open_webui_secret_key: "replace-me-later"
