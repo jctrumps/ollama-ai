@@ -23,8 +23,8 @@ Current model/runtime defaults:
 
 Current access URLs:
 
-- Open WebUI: `http://192.168.86.254:3000`
-- Ollama API: `http://192.168.86.254:11434`
+- Open WebUI: `http://<vm-ip>:3000`
+- Ollama API: `http://<vm-ip>:11434`
 
 ## Supporting Docs
 

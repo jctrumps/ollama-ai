@@ -99,7 +99,7 @@ The repo `ansible.cfg` uses that path as `private_key_file`.
 Current deployed inventory also expects:
 
 - Ansible user: `ubuntu`
-- VM IP: `192.168.86.254`
+- VM IP: `<vm-ip>`
 - Private key: `~/.ssh/ollama_01_ed25519`
 
 ## Find The VM IP

@@ -16,7 +16,7 @@ Confirm `OLLAMA_BASE_URL=http://ollama:11434` in the Open WebUI container enviro
 Open WebUI is intentionally served over plain HTTP by IP:
 
 ```text
-http://192.168.86.254:3000
+http://<vm-ip>:3000
 ```
 
 Check containers on the VM:
@@ -30,7 +30,7 @@ docker compose logs open-webui
 Check from Windows:
 
 ```powershell
-curl.exe http://192.168.86.254:3000/
+curl.exe http://<vm-ip>:3000/
 ```
 
 If the browser cannot load the page, verify port `3000` is open and the container is running.
@@ -38,7 +38,7 @@ If the browser cannot load the page, verify port `3000` is open and the containe
 ## Ollama API
 
 ```powershell
-curl.exe http://192.168.86.254:11434/api/version
+curl.exe http://<vm-ip>:11434/api/version
 ```
 
 Expected result: a JSON version response.
@@ -73,7 +73,7 @@ For Qwen3 models, simple prompts can be slow because the model generates a long 
 For direct Ollama API calls, use `"think": false`:
 
 ```powershell
-curl.exe http://192.168.86.254:11434/api/generate -d '{"model":"qwen3:30b-a3b","prompt":"say hello","stream":true,"think":false,"options":{"num_predict":64,"num_ctx":2048}}'
+curl.exe http://<vm-ip>:11434/api/generate -d '{"model":"qwen3:30b-a3b","prompt":"say hello","stream":true,"think":false,"options":{"num_predict":64,"num_ctx":2048}}'
 ```
 
 Open WebUI background tasks can also consume CPU after an answer. The Compose defaults route task work to `tinyllama:latest`, keep title generation enabled, and disable follow-up, tag, and autocomplete generation.

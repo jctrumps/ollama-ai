@@ -24,10 +24,10 @@ WSL
 eval "$(ssh-agent -s)"
 mkdir -p ~/.ssh
 
-cp /mnt/c/Users/<your-windows-user>/.ssh/<matching-private-key> ~/.ssh/
-chmod 600 ~/.ssh/<matching-private-key>
+cp /mnt/c/Users/<your-windows-user>/.ssh/ollama_01_ed25519 ~/.ssh/
+chmod 600 ~/.ssh/ollama_01_ed25519
 
-ssh-add ~/.ssh/<matching-private-key>
+ssh-add ~/.ssh/ollama_01_ed25519
 
 export ANSIBLE_CONFIG="$PWD/ansible.cfg"
 ansible-galaxy collection install -r requirements.yml
@@ -38,13 +38,13 @@ ansible-playbook site.yml
 The deployed stack exposes Open WebUI directly over HTTP:
 
 ```text
-http://192.168.86.254:3000
+http://<vm-ip>:3000
 ```
 
 Ollama is available at:
 
 ```text
-http://192.168.86.254:11434
+http://<vm-ip>:11434
 ```
 
 Docker image and layer storage stays at `/var/lib/docker`, and the application stores persistent data under `/srv/ai`.

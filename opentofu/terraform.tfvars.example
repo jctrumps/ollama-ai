@@ -11,7 +11,7 @@ cpu_cores    = 8
 memory_mb    = 32768
 disk_size_gb = 500
 
-datastore_id = "mycloudpr2100"
+datastore_id = "proxmox-storage"
 bridge       = "vmbr0"
 
 # Static example. Use null values for DHCP.

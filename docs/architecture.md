@@ -4,7 +4,7 @@
 
 ```text
 Proxmox VE host
-└── mycloudpr2100 datastore
+└── <proxmox-datastore>
     └── ollama-01 VM
     ├── Ubuntu Server 24.04 LTS
     ├── Docker Engine
@@ -12,7 +12,7 @@ Proxmox VE host
     └── Open WebUI
 ```
 
-Docker runs inside the VM, not directly on the Proxmox host. The VM disk lives on Proxmox storage `mycloudpr2100`, while the guest uses normal local Linux paths such as `/var/lib/docker` and `/srv/ai`.
+Docker runs inside the VM, not directly on the Proxmox host. The VM disk lives on the Proxmox datastore configured locally, while the guest uses normal local Linux paths such as `/var/lib/docker` and `/srv/ai`.
 
 ## Network Access
 
@@ -23,5 +23,5 @@ Docker runs inside the VM, not directly on the Proxmox host. The VM disk lives o
 
 Current URLs:
 
-- `http://192.168.86.254:3000`
-- `http://192.168.86.254:11434`
+- `http://<vm-ip>:3000`
+- `http://<vm-ip>:11434`

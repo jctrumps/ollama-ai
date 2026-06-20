@@ -55,7 +55,7 @@ variable "disk_size_gb" {
 
 variable "datastore_id" {
   type    = string
-  default = "mycloudpr2100"
+  default = "proxmox-storage"
 }
 
 variable "bridge" {

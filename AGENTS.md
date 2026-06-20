@@ -11,12 +11,12 @@
 Default target values used across the repo:
 
 - VM name: `ollama-01`
-- Proxmox datastore: `mycloudpr2100`
+- Proxmox datastore: `<proxmox-datastore>`
 - VM disk size: `500 GB`
 - App path: `/opt/ollama-ai`
 - Data path: `/srv/ai`
 - Ollama port: `11434`
-- Open WebUI URL: `http://192.168.86.254:3000`
+- Open WebUI URL: `http://<vm-ip>:3000`
 
 Current project state:
 
@@ -51,7 +51,7 @@ Current project state:
 - `ansible/roles/ai_stack/tasks/main.yml` copies `compose/compose.yml` and `.env.example` to `/opt/ollama-ai` on the VM.
 - Open WebUI is exposed directly on host port `3000`; Caddy is not used.
 - `ansible/roles/base/tasks/main.yml` installs base packages and enables the qemu guest agent.
-- The VM disk is intended to live on Proxmox storage `mycloudpr2100`; the guest does not mount the NAS directly.
+- The VM disk is intended to live on a Proxmox datastore selected in local OpenTofu configuration; the guest does not mount the NAS directly.
 - The initial model list pulls a mixed CPU-oriented starter bundle. Open WebUI defaults to `tinyllama:latest`, which is also warmed by a one-shot Compose service at stack startup.
 - `qwen3:30b-a3b` remains installed for higher-quality testing.
 - CPU defaults use bounded context, one loaded model, one active generation, and a small request queue.

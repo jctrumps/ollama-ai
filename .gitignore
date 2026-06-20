@@ -4,6 +4,11 @@
 *.tfstate.*
 .terraform/
 terraform.tfvars
+opentofu/terraform.tfvars
+opentofu/*.auto.tfvars
+opentofu/*.auto.tfvars.json
+opentofu/terraform.tfstate
+opentofu/terraform.tfstate.*
 ansible/inventory/hosts.ini
 
 # OS/editor

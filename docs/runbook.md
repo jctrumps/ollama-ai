@@ -14,8 +14,8 @@ docker compose logs -f
 From Windows or another LAN client:
 
 ```powershell
-curl.exe http://192.168.86.254:3000/
-curl.exe http://192.168.86.254:11434/api/version
+curl.exe http://<vm-ip>:3000/
+curl.exe http://<vm-ip>:11434/api/version
 ```
 
 These checks use direct IP access only.

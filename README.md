@@ -30,22 +30,22 @@ Docs     -> explain operations, security, models, and recovery
 | VM name | `ollama-01` |
 | OS | Ubuntu Server 24.04 LTS |
 | Template | `ubuntu-2404-cloudinit` |
-| Proxmox datastore | `mycloudpr2100` |
+| Proxmox datastore | `<proxmox-datastore>` |
 | VM disk size | `500 GB` |
 | App path | `/opt/ollama-ai` |
 | Data path | `/srv/ai` |
 | Ollama URL | `http://<vm-ip>:11434` |
-| Open WebUI URL | `http://192.168.86.254:3000` |
+| Open WebUI URL | `http://<vm-ip>:3000` |
 
 ## Current Status
 
 The infrastructure and application stack are in a working baseline state:
 
-- OpenTofu provisions the VM on Proxmox storage `mycloudpr2100`.
+- OpenTofu provisions the VM on the Proxmox datastore configured in local `terraform.tfvars`.
 - Ansible configures Ubuntu, Docker, Ollama, Open WebUI, firewall rules, and model pulls.
 - Docker data stays at `/var/lib/docker`; application data stays under `/srv/ai`.
-- Open WebUI is exposed directly over HTTP on `http://192.168.86.254:3000`.
-- Ollama responds on `http://192.168.86.254:11434`.
+- Open WebUI is exposed directly over HTTP on `http://<vm-ip>:3000`.
+- Ollama responds on `http://<vm-ip>:11434`.
 - `tinyllama:latest` is the Open WebUI default for fast CPU responses.
 - `qwen3:30b-a3b` remains installed for higher-quality testing.
 - Ollama is tuned for CPU-oriented use with bounded context, one loaded model, one active generation, and a small request queue.
@@ -129,10 +129,10 @@ make deploy
 
 ## HX5 storage model
 
-The HX5 host uses the WD MyCloud PR2100 as a Proxmox NFS datastore. The VM disk itself lives on `mycloudpr2100`, so the guest uses normal local Linux paths and does not mount the NAS directly.
+The host uses a Proxmox-backed datastore for the VM disk, so the guest uses normal local Linux paths and does not mount the NAS directly.
 
-- Proxmox storage: `mycloudpr2100`
-- Backing NAS: `MyCloudPR2100` at `192.168.86.19`
+- Proxmox storage: `<proxmox-datastore>`
+- Backing NAS: `<nas-host>` at `<nas-ip>`
 - Default VM disk size: `500 GB`
 - AI data path: `/srv/ai`
 - Docker data-root: `/var/lib/docker`
@@ -148,13 +148,13 @@ WSL Ansible commands expect the SSH private key at `~/.ssh/ollama_01_ed25519`.
 Open WebUI is published directly over HTTP:
 
 ```text
-http://192.168.86.254:3000
+http://<vm-ip>:3000
 ```
 
 Ollama API:
 
 ```text
-http://192.168.86.254:11434
+http://<vm-ip>:11434
 ```
 
 No HTTPS proxy, local DNS, mDNS, LLMNR, or hosts-file workaround is part of the current design.

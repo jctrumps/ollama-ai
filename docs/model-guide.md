@@ -8,9 +8,12 @@ Current Open WebUI default is `tinyllama:latest` for fast CPU responses. `qwen3:
 | `qwen3:4b` | first validation model |
 | `llama3.2:3b` | lightweight general chat |
 | `gemma3:4b` | compact general-purpose option |
+| `qwen2.5-coder:1.5b` | lightweight coding-focused option |
 | `qwen3:8b` | stronger general model on CPU |
 | `qwen2.5-coder:7b` | compact coding-focused model |
+| `phi3.5:latest` | compact reasoning/general model |
 | `gemma3:12b` | larger Gemma quality test |
+| `deepseek-r1:7b` | distilled reasoning-focused model |
 | `phi4:14b` | larger reasoning/general model |
 | `qwen3:14b` | higher-quality Qwen CPU test |
 | `qwen3:30b-a3b` | higher-quality MoE-style model for current testing |
@@ -22,9 +25,12 @@ Current Ansible starter bundle:
 - `qwen3:4b`
 - `llama3.2:3b`
 - `gemma3:4b`
+- `qwen2.5-coder:1.5b`
 - `qwen3:8b`
 - `qwen2.5-coder:7b`
+- `phi3.5:latest`
 - `gemma3:12b`
+- `deepseek-r1:7b`
 - `phi4:14b`
 - `qwen3:14b`
 - `qwen3:30b-a3b`
